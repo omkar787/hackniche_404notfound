@@ -42,7 +42,7 @@ function App() {
 			<AuthContextProvider>
 				<CookiesProvider>
 					<ToastContainer />
-					<PushNotification show_notification />
+					<PushNotification show_notification={show_notification} />
 					<Routes>
 						<Route
 							path="/"
