@@ -7,9 +7,6 @@ const NewsSchema = new mongoose.Schema({
 	link: {
 		type: "String",
 	},
-	// keywords: {
-	//   type: ["String"],
-	// },
 	author: {
 		type: "String",
 	},
@@ -27,12 +24,15 @@ const NewsSchema = new mongoose.Schema({
 	image_url: {
 		type: "String",
 	},
-	source_id: {
-		type: mongoose.Types.ObjectId,
+	source_name: {
+		type: "String",
 	},
 
-	category: {
+	category_id: {
 		type: mongoose.SchemaTypes.ObjectId,
+	},
+	category_name: {
+		type: "String",
 	},
 	language: {
 		type: "String",
@@ -41,10 +41,6 @@ const NewsSchema = new mongoose.Schema({
 		type: Number,
 		default: 0,
 	},
-	// comment_count: {
-	// 	type: Number,
-	// 	default: 0,
-	// },
 });
 
 module.exports = mongoose.model("news", NewsSchema);

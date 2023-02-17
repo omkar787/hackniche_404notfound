@@ -43,42 +43,49 @@ mongoose
 const popu = async () => {
 	const categories = await get_categories();
 	let articles = null;
-	const sources = await get_sources();
-	console.log(sources);
-	// categories.map(async (cat) => {
-	// 	try {
-	// 		const url = `${process.env.NEWS_API_URL}?q=${
-	// 			cat.name
-	// 		}&from=${get_current_date()}&sortBy=relevancy&apiKey=${
-	// 			process.env.NEWS_API_KEY
-	// 		}`;
+	// const sources = await get_sources();
+	categories.map(async (cat) => {
+		try {
+			const url = `${process.env.NEWS_API_URL}?q=${
+				cat.name
+			}&from=${get_current_date()}&sortBy=relevancy&apiKey=${
+				process.env.NEWS_API_KEY
+			}`;
 
-	// 		// console.log(url);
-	// 		const data = await axios.get(url);
+			// console.log(url);
+			const data = await axios.get(url);
 
-	// 		// console.log(data);
-	// 		articles = data.data.articles;
+			// console.log(data);
+			articles = data.data.articles;
+			add_news(articles, cat);
 
-	// 		const main_articles = articles.map((article_obj) => {
-	// 			return {
-	// 				...article_obj,
-	// 				source_id: find_source_id(sources, article_obj.source.name),
-	// 				image_url: article_obj.urlToImage,
-	// 				link: article_obj.url,
-	// 				pubDate: article_obj.publishedAt,
-	// 				urlToImage: null,
-	// 				url: null,
-	// 			};
-	// 		});
+			// console.log("Inserted articles ", n);
+		} catch (error) {
+			console.log(error);
+		}
+	});
+};
 
-	// 		// console.log(main_articles);
-	// 		const n = await News.create(main_articles);
+const add_news = async (articles, cat) => {
+	const main_articles = articles.map((article_obj) => {
+		console.log(article_obj);
+		return {
+			...article_obj,
+			source_name: article_obj.source.name,
+			image_url: article_obj.urlToImage,
+			link: article_obj.url,
+			pubDate: article_obj.publishedAt,
+			urlToImage: null,
+			url: null,
+			source: null,
+			category_id: cat._id,
+			catgory_name: cat.name,
+		};
+	});
 
-	// 		// console.log("Inserted articles ", n);
-	// 	} catch (error) {
-	// 		console.log(error);
-	// 	}
-	// });
+	// console.log(main_articles);
+	const n = await News.create(main_articles);
+	console.log("Added article for = ", cat);
 };
 
 const find_source_id = (sources, name) => {
@@ -97,8 +104,8 @@ const find_source_id = (sources, name) => {
 
 const get_sources = async () => {
 	try {
-		const all_sources = await Sources.find().exec();
-
+		const all_sources = await Sources.find().lean().exec();
+		console.log(all_sources.length);
 		return all_sources;
 	} catch (error) {
 		console.log("Error occured while fetching sources ", error);
