@@ -43,6 +43,7 @@ export function LoginForm() {
       password,
     });
     const data = response.data;
+
     setCookie("jwt", data.token, { path: "/" });
 
     setSubmitting(false);
