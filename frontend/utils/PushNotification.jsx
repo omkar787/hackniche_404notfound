@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import instance from "../../utils/axiosInstance";
+import instance from "./axiosInstance";
 
 export default function PushNotification(show_notification) {
   const [interest, setInterest] = useState(null);
