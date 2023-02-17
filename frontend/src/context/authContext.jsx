@@ -24,7 +24,6 @@ const AuthContextProvider = ({ children }) => {
       setLoading(true);
 
       const res = await instance.get("/users/verifyLoggedIn");
-      console.log(res.data);
       if (res.data.ok) {
         setUser(res.data.user);
         navigate("/");
