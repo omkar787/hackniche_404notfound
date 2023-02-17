@@ -1,0 +1,22 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Design a news api which displays news based on users feed and recommendation",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/omkar787/dj-hackathon-news-ps.git"
+  },
+  "keywords": [
+    "nodejs"
+  ],
+  "author": "404-not-found",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/omkar787/dj-hackathon-news-ps/issues"
+  },
+  "homepage": "https://github.com/omkar787/dj-hackathon-news-ps#readme"
+}
