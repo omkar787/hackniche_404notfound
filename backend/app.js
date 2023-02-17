@@ -5,6 +5,8 @@ const cors = require("cors");
 const morgan = require("morgan");
 
 const userRouter = require("./routes/userRoutes");
+const newsRouter = require("./routes/newsRoutes");
+
 const AppError = require("./utils/appError");
 const globalErrorHandler = require("./controllers/errorController");
 
@@ -26,6 +28,7 @@ app.use(morgan("dev"));
 
 // Routes
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/news", newsRouter);
 
 app.all("*", (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server`, 404));
