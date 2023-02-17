@@ -16,14 +16,19 @@ import {
 
 import { PropagateLoader } from "react-spinners";
 import { useCookies } from "react-cookie";
-import axios from "axios";
 import instance from "../../../utils/axiosInstance";
+import { ToastContainer } from "react-toastify";
+
+import { showToastMessage } from "../../utils/toastify";
+
+import { useNavigate } from "react-router-dom";
 
 export function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [cookies, setCookie] = useCookies(["jwt"]);
+  const navigate = useNavigate();
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -38,14 +43,18 @@ export function LoginForm() {
     if (!email || !password) return;
 
     setSubmitting(true);
-    const response = await instance.post("/users/login", {
-      email,
-      password,
-    });
-    const data = response.data;
-
-    setCookie("jwt", data.token, { path: "/" });
-
+    try {
+      const response = await instance.post("/users/login", {
+        email,
+        password,
+      });
+      const data = response.data;
+      console.log(data);
+      setCookie("jwt", data.token, { path: "/" });
+      navigate("/");
+    } catch (error) {
+      showToastMessage(error.response.data.message, "error", 2000);
+    }
     setSubmitting(false);
   };
 
@@ -56,6 +65,7 @@ export function LoginForm() {
         backdropFilter: "brightness(50%)",
       }}
     >
+      <ToastContainer />
       <LoginCard>
         <Branding>
           <ImageLogo
