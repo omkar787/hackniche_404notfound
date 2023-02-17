@@ -44,10 +44,12 @@ const WhenLogin = ({ user }) => {
   useEffect(() => {
     const query = async () => {
       const res = await instance.get(`/news/?category=${user.category.join()}`);
-      console.log(res);
+      console.log("feed", res);
+      if (res.data?.data?.data) {
+        setNews(res.data.data.data);
+      }
     };
     query();
-    // console.log(user.category.join());
   }, []);
 
   return (
@@ -55,12 +57,13 @@ const WhenLogin = ({ user }) => {
       <CenterSeparator
         style={{
           textAlign: "left",
-          paddingLeft: "70px",
+          paddingLeft: "130px",
           boxSizing: "border-box",
         }}
       >
         Your Feed:{" "}
       </CenterSeparator>
+      <LatestNews news={news} />
     </>
   );
 };
