@@ -16,7 +16,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import { CardClickable, LatestNewsContainer } from "./elements";
 import ViewNews from "./ViewNews";
 
-const LatestNews = () => {
+const LatestNews = ({news}) => {
   const [currentNews, setCurrentNews] = useState(null);
   const [showNews, setShowNews] = useState(false);
 
@@ -24,7 +24,7 @@ const LatestNews = () => {
 
   return (
     <LatestNewsContainer>
-      {lotsOfDocs.map((ele, i) => (
+      {news.map((ele, i) => (
         <NewsCard
           news={ele}
           key={i}
