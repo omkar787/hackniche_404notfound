@@ -4,147 +4,126 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const Category = require("./models/Category");
 const Country = require("./models/Country");
+const News = require("./models/News");
+const axios = require("axios");
+const Sources = require("./models/Sources");
 
 dotenv.config({
-  path: "./.env",
+	path: "./.env",
 });
 
+console.log(process.env.MONGODB_URL);
 const database = process.env.MONGODB_URL.replace(
-  "<PASSWORD>",
-  process.env.MONGODB_PASSWORD
+	"<PASSWORD>",
+	process.env.MONGODB_PASSWORD
 );
 
+const get_current_date = () => {
+	const dt = new Date();
+	return `${dt.getFullYear()}-${dt.getMonth() + 1}-${dt.getDate()}`;
+};
 mongoose
-  .connect(database, {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false,
-  })
-  .then(() => {
-    console.log(`Database connected successfully!`);
-    // Category.insertMany(catObjs).then(() => console.log("inserted"));
-    Country.insertMany(countries).then(() => console.log("inserted countries"));
-  })
-  .catch((error) => console.log(error));
+	.connect(database, {
+		useNewUrlParser: true,
+		useCreateIndex: true,
+		useUnifiedTopology: true,
+		useFindAndModify: false,
+	})
+	.then(async () => {
+		console.log(`Database connected successfully!`);
+		// Category.insertMany(func(categories)).then(() => console.log("inserted"));
 
-const categories = [
-  "entertainment",
-  "environment",
-  "food",
-  "health",
-  "politics",
-  "science",
-  "sports",
-  "technology",
-  "top",
-  "world",
-];
+		// popu();
+		// await populate_sources();
+		// console.log("Sources Populated successfully");
+		await popu();
+	})
+	.catch((error) => console.log(error));
 
-const catObjs = categories.map((c) => ({
-  name: c,
-}));
+const popu = async () => {
+	const categories = await get_categories();
+	let articles = null;
+	const sources = await get_sources();
+	console.log(sources);
+	// categories.map(async (cat) => {
+	// 	try {
+	// 		const url = `${process.env.NEWS_API_URL}?q=${
+	// 			cat.name
+	// 		}&from=${get_current_date()}&sortBy=relevancy&apiKey=${
+	// 			process.env.NEWS_API_KEY
+	// 		}`;
 
-const countries = [
-  { name: "Algeria", code: "dz" },
-  { name: "Angola", code: "ao" },
-  { name: "Argentina", code: "ar" },
-  { name: "Australia", code: "au" },
-  { name: "Austria", code: "at" },
-  { name: "Azerbaijan", code: "az" },
-  { name: "Bangladesh", code: "bd" },
-  { name: "Belarus", code: "by" },
-  { name: "Belgium", code: "be" },
-  { name: "Bolivia", code: "bo" },
-  { name: "Brazil", code: "br" },
-  { name: "Bulgaria", code: "bg" },
-  { name: "Burkina fasco", code: "bf" },
-  { name: "Cameroon", code: "cm" },
-  { name: "Canada", code: "ca" },
-  { name: "Chile", code: "cl" },
-  { name: "China", code: "cn" },
-  { name: "Colombia", code: "co" },
-  { name: "Costa Rica", code: "cr" },
-  { name: "Côte d'Ivoire", code: "ci" },
-  { name: "Cuba", code: "cu" },
-  { name: "Czech republic", code: "cz" },
-  { name: "Denmark", code: "dk" },
-  { name: "Dominican republic", code: "do" },
-  { name: "DR Congo", code: "cd" },
-  { name: "Ecuador", code: "ec" },
-  { name: "Egypt", code: "eg" },
-  { name: "Estonia", code: "ee" },
-  { name: "Ethiopia", code: "et" },
-  { name: "Finland", code: "fi" },
-  { name: "France", code: "fr" },
-  { name: "Germany", code: "de" },
-  { name: "Ghana", code: "gh" },
-  { name: "Greece", code: "gr" },
-  { name: "Hong kong", code: "hk" },
-  { name: "Hungary", code: "hu" },
-  { name: "India", code: "in" },
-  { name: "Indonesia", code: "id" },
-  { name: "Iraq", code: "iq" },
-  { name: "Ireland", code: "ie" },
-  { name: "Israel", code: "il" },
-  { name: "Italy", code: "it" },
-  { name: "Japan", code: "jp" },
-  { name: "Jordan", code: "jo" },
-  { name: "Kazakhstan", code: "kz" },
-  { name: "Kenya", code: "ke" },
-  { name: "Kuwait", code: "kw" },
-  { name: "Latvia", code: "lv" },
-  { name: "Lebanon", code: "lb" },
-  { name: "Lithuania", code: "lt" },
-  { name: "Luxembourg", code: "lu" },
-  { name: "Madagascar", code: "mg" },
-  { name: "Malawi", code: "mw" },
-  { name: "Malaysia", code: "my" },
-  { name: "Mali", code: "ml" },
-  { name: "Mexico", code: "mx" },
-  { name: "Morocco", code: "ma" },
-  { name: "Mozambique", code: "mz" },
-  { name: "Myanmar", code: "mm" },
-  { name: "Nepal", code: "np" },
-  { name: "Netherland", code: "nl" },
-  { name: "New zealand", code: "nz" },
-  { name: "Nigeria", code: "ng" },
-  { name: "North korea", code: "kp" },
-  { name: "Norway", code: "no" },
-  { name: "Oman", code: "om" },
-  { name: "Pakistan", code: "pk" },
-  { name: "Panama", code: "pa" },
-  { name: "Paraguay", code: "py" },
-  { name: "Peru", code: "pe" },
-  { name: "Philippines", code: "ph" },
-  { name: "Poland", code: "pl" },
-  { name: "Portugal", code: "pt" },
-  { name: "Puerto rico", code: "pr" },
-  { name: "Romania", code: "ro" },
-  { name: "Russia", code: "ru" },
-  { name: "Saudi arabia", code: "sa" },
-  { name: "Senegal", code: "sn" },
-  { name: "Serbia", code: "rs" },
-  { name: "Singapore", code: "sg" },
-  { name: "Slovakia", code: "sk" },
-  { name: "Slovenia", code: "si" },
-  { name: "Somalia", code: "so" },
-  { name: "South africa", code: "za" },
-  { name: "South korea", code: "kr" },
-  { name: "Spain", code: "es" },
-  { name: "Sudan", code: "sd" },
-  { name: "Sweden", code: "se" },
-  { name: "Switzerland", code: "ch" },
-  { name: "Taiwan", code: "tw" },
-  { name: "Tanzania", code: "tz" },
-  { name: "Thailand", code: "th" },
-  { name: "Turkey", code: "tr" },
-  { name: "Uganda", code: "ug" },
-  { name: "Ukraine", code: "ua" },
-  { name: "United arab emirates", code: "ae" },
-  { name: "United kingdom", code: "gb" },
-  { name: "United states of america", code: "us" },
-  { name: "Venezuela", code: "ve" },
-  { name: "Vietnam", code: "vi" },
-  { name: "Zambia", code: "zm" },
-];
+	// 		// console.log(url);
+	// 		const data = await axios.get(url);
+
+	// 		// console.log(data);
+	// 		articles = data.data.articles;
+
+	// 		const main_articles = articles.map((article_obj) => {
+	// 			return {
+	// 				...article_obj,
+	// 				source_id: find_source_id(sources, article_obj.source.name),
+	// 				image_url: article_obj.urlToImage,
+	// 				link: article_obj.url,
+	// 				pubDate: article_obj.publishedAt,
+	// 				urlToImage: null,
+	// 				url: null,
+	// 			};
+	// 		});
+
+	// 		// console.log(main_articles);
+	// 		const n = await News.create(main_articles);
+
+	// 		// console.log("Inserted articles ", n);
+	// 	} catch (error) {
+	// 		console.log(error);
+	// 	}
+	// });
+};
+
+const find_source_id = (sources, name) => {
+	const dt = sources.find((obj) => {
+		if (obj.name === name) {
+			return true;
+			console.log("FOund source", obj._id);
+			// return mongoose.Types.ObjectId(obj._id);
+		}
+	});
+	console.log(name);
+	console.log("Source ID data: ", dt);
+
+	return mongoose.Types.ObjectId(dt?._id);
+};
+
+const get_sources = async () => {
+	try {
+		const all_sources = await Sources.find().exec();
+
+		return all_sources;
+	} catch (error) {
+		console.log("Error occured while fetching sources ", error);
+	}
+};
+const populate_sources = async () => {
+	try {
+		let sources = await axios.get(
+			`https://newsapi.org/v2/top-headlines/sources?apikey=${process.env.NEWS_API_KEY}`
+		);
+		sources = sources.data.sources;
+		Sources.create(sources);
+	} catch (error) {
+		console.log(error);
+	}
+};
+
+const get_categories = async () => {
+	try {
+		const all_categories = await Category.find().exec();
+		// console.log(all_categories);
+		return all_categories;
+	} catch (error) {
+		console.log("Error occured while fetching categories ", error);
+	}
+};
+
+// get_categories();
