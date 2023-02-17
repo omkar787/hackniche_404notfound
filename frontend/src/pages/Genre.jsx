@@ -1,14 +1,14 @@
 import React from "react";
+import { GenreForm } from "../components/Auth/GenreForm";
 import Navbar from "../components/Navbar";
-import SignUpForm from "../components/Auth/SignUpForm";
 
-const Signup = () => {
+const Genre = () => {
   return (
     <div>
       <Navbar />
-      <SignUpForm />
+      <GenreForm />
     </div>
   );
 };
 
-export default Signup;
+export default Genre;
