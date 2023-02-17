@@ -1,13 +1,4 @@
-import {
-  FormControl,
-  FormControlLabel,
-  InputLabel,
-  MenuItem,
-  Radio,
-  RadioGroup,
-  Select,
-  TextField,
-} from "@mui/material";
+import { TextField } from "@mui/material";
 import { useState } from "react";
 import {
   Branding,
@@ -22,13 +13,17 @@ import {
   LoginTitle,
   SubmitButton,
 } from "./LoginItems";
-import { PropagateLoader } from "react-spinners";
 
-export function LoginForm({ onSubmit }) {
+import { PropagateLoader } from "react-spinners";
+import { useCookies } from "react-cookie";
+import axios from "axios";
+import instance from "../../../utils/axiosInstance";
+
+export function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const [type, setType] = useState("volunteer");
+  const [cookies, setCookie] = useCookies(["jwt"]);
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -40,19 +35,17 @@ export function LoginForm({ onSubmit }) {
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-    setSubmitting(true);
-    await onSubmit(
-      {
-        email,
-        password,
-      },
-      type
-    );
-    setSubmitting(false);
-  };
+    if (!email || !password) return;
 
-  const handleChange = (e) => {
-    setType(e.target.value);
+    setSubmitting(true);
+    const response = await instance.post("/users/login", {
+      email,
+      password,
+    });
+    const data = response.data;
+    setCookie("jwt", data.token, { path: "/" });
+
+    setSubmitting(false);
   };
 
   return (

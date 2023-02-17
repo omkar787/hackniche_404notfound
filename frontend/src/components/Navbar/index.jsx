@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useAuth } from "../../context/authContext";
 import {
   AuthButtonGroup,
   LoginButton,
@@ -9,6 +10,8 @@ import {
 } from "./elements";
 
 const Navbar = () => {
+  const { user, loadingUser } = useAuth();
+
   return (
     <NavContainer>
       <LogoStuff>
@@ -16,8 +19,16 @@ const Navbar = () => {
         <NavTitle>News !</NavTitle>
       </LogoStuff>
       <AuthButtonGroup>
-        <LoginButton to={"/login"}>Login</LoginButton>
-        <RegisterButton to={"/signup"}>Register</RegisterButton>
+        {loadingUser ? (
+          <span style={{ color: "white" }}>loading...</span>
+        ) : user ? (
+          <span style={{ color: "white" }}>{user.name}</span>
+        ) : (
+          <>
+            <LoginButton to={"/login"}>Login</LoginButton>
+            <RegisterButton to={"/signup"}>Register</RegisterButton>
+          </>
+        )}
       </AuthButtonGroup>
     </NavContainer>
   );
