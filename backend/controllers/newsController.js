@@ -58,5 +58,9 @@ exports.getAllNewsMatchingTitle = catchAsync(async (req, res, next) => {
 });
 
 exports.getAllTopNews = catchAsync(async (req, res, next) => {
-  //
+  req.query.limit = "5";
+  req.query.sort = "-like_count,-hits,-pubDate";
+  req.query.fields =
+    "category,keywords,like_count,hits,title,link,description,content,pubDate,image_url,source";
+  next();
 });
