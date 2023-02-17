@@ -25,6 +25,9 @@ import {
 import { PropagateLoader } from "react-spinners";
 import instance from "../../../utils/axiosInstance";
 import GenreModal from "./GenreModal";
+import { showToastMessage } from "../../utils/toastify";
+import { ToastContainer } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 export default function SignUp({ onSubmit }) {
 	const [email, setEmail] = useState("");
@@ -38,24 +41,30 @@ export default function SignUp({ onSubmit }) {
 	const [saving, setSaving] = useState(false);
 
 	const [selectedData, updateSelectedData] = useState([]);
+	const navigate = useNavigate();
 
 	const func = async () => {
-		if (submitting && saving) {
-			const temp = selectedData.map((dt) => {
-				return dt.key;
-			});
-			let data = await instance.post("/users/signup", {
-				name,
-				email,
-				password,
-				category: temp,
-			});
-			data = data.data;
-			if (data.status === "success") {
-				alert("User register");
-			} else {
-				alert("User not register");
+		try {
+			if (submitting && saving) {
+				const temp = selectedData.map((dt) => {
+					return dt.key;
+				});
+				let data = await instance.post("/users/signup", {
+					name,
+					email,
+					password,
+					category: temp,
+				});
+				data = data.data;
+
+				showToastMessage("Registration Successfull!", "success");
+
+				setSaving(false);
+				setSubmitting(false);
+				navigate("/");
 			}
+		} catch (error) {
+			showToastMessage("Registration Unsuccessfull!", "error");
 			setSaving(false);
 			setSubmitting(false);
 		}
@@ -96,6 +105,7 @@ export default function SignUp({ onSubmit }) {
 
 	return (
 		<GradientBackground style={{ background: "url(/assets/space.jfif)" }}>
+			<ToastContainer />
 			<LoginCard>
 				<Branding>
 					<ImageLogo
