@@ -33,7 +33,9 @@ const Home = () => {
             );
           })}
         </Slider>
-        <CenterSeparator>Latest News</CenterSeparator>
+        <CenterSeparator style={{ paddingBottom: "20px" }}>
+          Latest News
+        </CenterSeparator>
         <LatestNews />
       </div>
     </div>

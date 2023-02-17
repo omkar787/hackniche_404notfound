@@ -16,7 +16,7 @@ export const SlideButton = styled.button`
   &:hover {
     opacity: 1;
     transform: scale(1.1);
-    background: rgba(255, 255, 255, 0.7);
+    background: rgba(0, 0, 0, 0.4);
   }
   &:active {
     transform: scale(1);

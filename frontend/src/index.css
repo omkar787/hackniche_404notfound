@@ -5,8 +5,7 @@ body,
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  color: black;
-  font-family: Outfit;
+  font-family: Outfit !important;
 }
 
 body {

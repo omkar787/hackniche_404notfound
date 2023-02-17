@@ -67,3 +67,13 @@ export const CenterSeparator = styled.div`
   margin-bottom: 18px;
   color: white;
 `;
+
+export const LatestNewsContainer = styled.div`
+  padding: 0px 70px;
+  padding-bottom: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: space-around;
+  align-items: center;
+`;
