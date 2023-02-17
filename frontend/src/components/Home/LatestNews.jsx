@@ -6,28 +6,52 @@ import {
   CardMedia,
   Chip,
   IconButton,
+  Modal,
+  Slide,
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
 import ShareIcon from "@mui/icons-material/Share";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import { LatestNewsContainer } from "./elements";
+import { CardClickable, LatestNewsContainer } from "./elements";
+import ViewNews from "./ViewNews";
 
 const LatestNews = () => {
+  const [currentNews, setCurrentNews] = useState(null);
+  const [showNews, setShowNews] = useState(false);
+
+  const handleClose = () => setShowNews(false);
+
   return (
     <LatestNewsContainer>
       {lotsOfDocs.map((ele, i) => (
-        <NewsCard news={ele} key={i} />
+        <NewsCard
+          news={ele}
+          key={i}
+          onCardClick={() => {
+            console.log(ele);
+            setCurrentNews(ele);
+            setShowNews(true);
+          }}
+        />
       ))}
-      <NewsCard news={test} />
+      <Modal open={showNews} onClose={handleClose}>
+        <ViewNews news={currentNews} close={handleClose} />
+      </Modal>
     </LatestNewsContainer>
   );
 };
 
-const NewsCard = ({ news }) => {
+const NewsCard = ({ news, onCardClick }) => {
   const dateObj = new Date(news.pubDate);
   const [liked, setLiked] = useState(false);
   const toggleLike = () => setLiked(!liked);
+
+  const onClick = (newsItem) => {
+    setCurrentNews(newsItem);
+    setShowNews(true);
+  };
+
   return (
     <Card
       sx={{
@@ -35,31 +59,37 @@ const NewsCard = ({ news }) => {
         height: 425,
         background: "#323437",
         marginBottom: "3rem",
+        transition: "150ms ease-in-out",
+        "&:hover": {
+          transform: "scale(1.07)",
+        },
       }}
     >
-      <CardMedia
-        component="img"
-        alt="green iguana"
-        height="200"
-        style={{ objectFit: "cover" }}
-        image={news.image_url}
-      />
-      <CardContent>
-        <Typography
-          gutterBottom
-          variant="h5"
-          component="div"
-          style={{ lineHeight: "0.98", fontWeight: "500" }}
-          color="#d3d2c7"
-        >
-          {news.title}
-        </Typography>
-        <div style={{ paddingTop: "12px", color: "#d3d2c7" }}>
-          {news?.description.length > 80
-            ? news?.description?.substring(0, 80) + "..."
-            : news.description}
-        </div>
-      </CardContent>
+      <CardClickable onClick={() => onCardClick(news)}>
+        <CardMedia
+          component="img"
+          alt="green iguana"
+          height="200"
+          style={{ objectFit: "cover" }}
+          image={news.image_url}
+        />
+        <CardContent style={{ paddingBottom: "7px" }}>
+          <Typography
+            gutterBottom
+            variant="h5"
+            component="div"
+            style={{ lineHeight: "0.98", fontWeight: "500" }}
+            color="#d3d2c7"
+          >
+            {news.title}
+          </Typography>
+          <div style={{ paddingTop: "12px", color: "#d3d2c7" }}>
+            {news?.description.length > 80
+              ? news?.description?.substring(0, 80) + "..."
+              : news.description}
+          </div>
+        </CardContent>
+      </CardClickable>
       <CardActions>
         <IconButton onClick={toggleLike}>
           <FavoriteIcon style={{ color: liked ? "#af1616" : "#d3d2c7" }} />
