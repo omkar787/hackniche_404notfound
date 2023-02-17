@@ -106,17 +106,6 @@ exports.protect = catchAsync(async (req, res, next) => {
     );
   }
 
-  // check if the user has changed his/her password
-  if (currentUser.changedPasswordAfter(decode.iat)) {
-    return next(
-      new AppError(
-        `User recently changed password, please login to continue!`,
-        401
-      )
-    );
-  }
-
-  res.locals.user = currentUser;
   req.user = currentUser;
   next();
 });
