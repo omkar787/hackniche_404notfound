@@ -17,9 +17,10 @@ import {
 import { PropagateLoader } from "react-spinners";
 import { useCookies } from "react-cookie";
 import instance from "../../../utils/axiosInstance";
+import { ToastContainer } from "react-toastify";
 
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { showToastMessage } from "../../utils/toastify";
+
 import { useNavigate } from "react-router-dom";
 
 export function LoginForm() {
@@ -35,19 +36,6 @@ export function LoginForm() {
 
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);
-  };
-
-  const showToastMessage = (message, type, time = 1000) => {
-    toast[type](message, {
-      position: "top-right",
-      autoClose: time,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
   };
 
   const handleFormSubmit = async (event) => {
