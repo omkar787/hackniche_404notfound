@@ -44,34 +44,41 @@ const popu = async () => {
 	const categories = await get_categories();
 	let articles = null;
 	// const sources = await get_sources();
-	categories.map(async (cat) => {
-		try {
-			const url = `${process.env.NEWS_API_URL}?q=${
-				cat.name
-			}&from=${get_current_date()}&sortBy=relevancy&language=en&apiKey=${
-				process.env.NEWS_API_KEY
-			}`;
+	// categories.map(async (cat) => {
+	// 	try {
+	// const url = `${process.env.NEWS_API_URL}?category=${cat.name}&language=en&apiKey=${process.env.NEWS_API_KEY}`;
+	const url =
+		"https://newsdata.io/api/1/news?q=adani&category=world&language=en&apiKey=pub_17328c4e55e349e38949414e2489b499e6221";
+	// const url =
+	// 	"https://newsdata.io/api/1/news?q=turkey&category=world&language=en&apiKey=pub_17328c4e55e349e38949414e2489b499e6221";
+	// const url =
+	// 	"https://newsdata.io/api/1/news?q=chatgpt&category=technology&language=en&apiKey=pub_17328c4e55e349e38949414e2489b499e6221";
+	// const url = `${process.env.NEWS_API_URL}?q=${
+	// 	cat.name
+	// }&from=${get_current_date()}&sortBy=relevancy&language=en&apiKey=${
+	// 	process.env.NEWS_API_KEY
+	// }`;
 
-			// console.log(url);
-			const data = await axios.get(url);
+	console.log(url);
+	const data = await axios.get(url);
 
-			// console.log(data);
-			articles = data.data.articles;
-			add_news(articles, cat);
+	// console.log(data);
+	articles = data.data.results;
+	add_news(articles, "world");
 
-			// console.log("Inserted articles ", n);
-		} catch (error) {
-			console.log(error);
-		}
-	});
+	// console.log("Inserted articles ", n);
+	// } catch (error) {
+	// 	console.log(error);
+	// }
+	// });
 };
 
 const add_news = async (articles, cat) => {
 	const main_articles = articles.map((article_obj) => {
-		console.log(article_obj);
+		// console.log(article_obj);
 		return {
 			...article_obj,
-			source_name: article_obj.source.name,
+			source_name: article_obj.source_id,
 			image_url: article_obj.urlToImage,
 			link: article_obj.url,
 			pubDate: article_obj.publishedAt,
