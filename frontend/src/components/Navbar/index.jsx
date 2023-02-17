@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../context/authContext";
-
+import { Link } from "react-router-dom";
 import {
   AuthButtonGroup,
   LoginButton,
