@@ -18,17 +18,17 @@ app.use(express.static(path.join(__dirname, "public")));
 const whitelist = ["http://localhost:5173"];
 
 app.use(
-  cors({
-    origin: function (origin, callback) {
-      if (whitelist.indexOf(origin) !== -1) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    // origin: "http://localhost:3000",
-    credentials: true,
-  })
+	cors({
+		origin: function (origin, callback) {
+			if (whitelist.indexOf(origin) !== -1 || !origin) {
+				callback(null, true);
+			} else {
+				callback(new Error("Not allowed by CORS"));
+			}
+		},
+		// origin: "http://localhost:3000",
+		credentials: true,
+	})
 );
 // app.options("*", cors());
 
@@ -46,7 +46,7 @@ app.use("/api/v1/users", userRouter);
 app.use("/api/v1/news", newsRouter);
 
 app.all("*", (req, res, next) => {
-  next(new AppError(`Can't find ${req.originalUrl} on this server`, 404));
+	next(new AppError(`Can't find ${req.originalUrl} on this server`, 404));
 });
 
 // GLOBAL ERRROR HANDLING MIDDLEWARE
