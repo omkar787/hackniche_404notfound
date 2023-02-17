@@ -110,6 +110,39 @@ exports.protect = catchAsync(async (req, res, next) => {
   next();
 });
 
+exports.verifyLoggedIn = async (req, res, next) => {
+  // check if the token is present
+  if (req.cookies.jwt) {
+    try {
+      // verification of the token
+      const decode = await promisify(jwt.verify)(
+        req.cookies.jwt,
+        process.env.JWT_SECRET
+      );
+
+      // check if the user still exists
+      const currentUser = await User.findById(decode.id);
+      if (!currentUser) {
+        return res.status(200).json({
+          ok: false,
+        });
+      }
+
+      return res.json({
+        ok: true,
+        user: currentUser,
+      });
+    } catch (error) {
+      return res.status(200).json({
+        ok: false,
+      });
+    }
+  }
+  return res.status(200).json({
+    ok: false,
+  });
+};
+
 exports.restrictTo =
   (...roles) =>
   (req, res, next) => {

@@ -15,7 +15,22 @@ const app = express();
 // serving static files
 app.use(express.static(path.join(__dirname, "public")));
 
-app.options("*", cors());
+const whitelist = ["http://localhost:5173"];
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (whitelist.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    // origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
+// app.options("*", cors());
 
 // cookie parser
 app.use(cookieParser());

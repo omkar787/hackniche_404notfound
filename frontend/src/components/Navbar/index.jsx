@@ -1,5 +1,6 @@
-import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useAuth } from "../../context/authContext";
+
 import {
   AuthButtonGroup,
   LoginButton,
@@ -10,7 +11,7 @@ import {
 } from "./elements";
 
 const Navbar = () => {
-  const location = useLocation();
+  const { user, loadingUser } = useAuth();
 
   return (
     <NavContainer>
@@ -21,11 +22,15 @@ const Navbar = () => {
         </LogoStuff>
       </Link>
       <AuthButtonGroup>
-        {location.pathname !== "/login" && (
-          <LoginButton to={"/login"}>Login</LoginButton>
-        )}
-        {location.pathname !== "/signup" && (
-          <RegisterButton to={"/signup"}>Sign Up</RegisterButton>
+        {loadingUser ? (
+          <span style={{ color: "white" }}>loading...</span>
+        ) : user ? (
+          <span style={{ color: "white" }}>{user.name}</span>
+        ) : (
+          <>
+            <LoginButton to={"/login"}>Login</LoginButton>
+            <RegisterButton to={"/signup"}>Register</RegisterButton>
+          </>
         )}
       </AuthButtonGroup>
     </NavContainer>
