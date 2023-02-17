@@ -1,14 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import SignUpForm from "../components/Auth/SignUpForm";
-import GenreModal from "../components/Auth/GenreModal";
 
 const Signup = () => {
 	return (
 		<div>
 			<Navbar />
 			<SignUpForm />
-			<GenreModal open={true} />
 		</div>
 	);
 };
