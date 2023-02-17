@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import instance from "../../utils/axiosInstance";
 import { CenterSeparator } from "../components/Home/elements";
 import LatestNews from "../components/Home/LatestNews";
 import Middle from "../components/Home/Middle";
@@ -7,6 +8,19 @@ import Slider from "../components/Slider";
 import Slide from "../components/Slider/Slide";
 
 const Home = () => {
+  const [news, setNews] = useState([]);
+
+
+
+  useEffect( () => {
+    const query = async () => {
+      const result = await instance.get('/news');
+      setNews(result.data.data.data);
+      console.log(result.data.data.data);
+    }
+    query();
+  }, []);
+
   return (
     <div>
       <Navbar />
@@ -36,7 +50,7 @@ const Home = () => {
         <CenterSeparator style={{ paddingBottom: "20px" }}>
           Latest News
         </CenterSeparator>
-        <LatestNews />
+        <LatestNews news={news} />
       </div>
     </div>
   );
