@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../context/authContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   AuthButtonGroup,
   LoginButton,
@@ -9,9 +9,28 @@ import {
   NavTitle,
   RegisterButton,
 } from "./elements";
+import { Menu, MenuItem } from "@mui/material";
+import instance from "../../../utils/axiosInstance";
 
 const Navbar = () => {
   const { user, loadingUser } = useAuth();
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+
+  const navigate = useNavigate();
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogout = async () => {
+    const res = await instance.get("/users/logout");
+    console.log(res);
+    window.location.reload(true);
+  };
 
   return (
     <NavContainer>
@@ -25,7 +44,30 @@ const Navbar = () => {
         {loadingUser ? (
           <span style={{ color: "white" }}>loading...</span>
         ) : user ? (
-          <span style={{ color: "white" }}>{user.name}</span>
+          <>
+            <span
+              style={{
+                color: "white",
+                padding: "4px 12px",
+                background: "#444",
+                cursor: "pointer",
+              }}
+              onClick={handleClick}
+            >
+              {user.name}
+            </span>
+            <Menu
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleClose}
+              MenuListProps={{
+                "aria-labelledby": "basic-button",
+              }}
+            >
+              <MenuItem onClick={handleClose}>My account</MenuItem>
+              <MenuItem onClick={handleLogout}>Logout</MenuItem>
+            </Menu>
+          </>
         ) : (
           <>
             <LoginButton to={"/login"}>Login</LoginButton>

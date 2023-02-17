@@ -55,7 +55,6 @@ export function LoginForm() {
     } catch (error) {
       showToastMessage(error.response.data.message, "error", 2000);
     }
-
     setSubmitting(false);
   };
 
