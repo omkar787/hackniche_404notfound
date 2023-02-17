@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../context/authContext";
+
 import {
   AuthButtonGroup,
   LoginButton,
@@ -14,10 +15,12 @@ const Navbar = () => {
 
   return (
     <NavContainer>
-      <LogoStuff>
-        <img src="/assets/logo.png" style={{ width: "42px" }} alt="logo" />
-        <NavTitle>News !</NavTitle>
-      </LogoStuff>
+      <Link to="/" style={{ textDecoration: "none" }}>
+        <LogoStuff>
+          <img src="/assets/logo.png" style={{ width: "42px" }} alt="logo" />
+          <NavTitle>News !</NavTitle>
+        </LogoStuff>
+      </Link>
       <AuthButtonGroup>
         {loadingUser ? (
           <span style={{ color: "white" }}>loading...</span>

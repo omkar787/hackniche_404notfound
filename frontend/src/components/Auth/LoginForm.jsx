@@ -117,7 +117,7 @@ export function LoginForm() {
     </GradientBackground>
   );
 }
-export const ButtonLoading = ({ color = "#9b00ea", marginTop = "1.6rem" }) => {
+export const ButtonLoading = ({ color = "black", marginTop = "1.6rem" }) => {
   return (
     <div
       style={{

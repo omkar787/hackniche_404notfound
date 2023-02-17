@@ -42,7 +42,7 @@ export const LoginButton = styled(Link)`
     text-decoration: underline;
   }
   &:active {
-    border: 1px solid white;
+    border: 1px solid #5c5c5c;
   }
 `;
 export const RegisterButton = styled(Link)`
