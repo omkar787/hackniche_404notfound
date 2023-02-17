@@ -9,19 +9,28 @@ import Signup from "../pages/Signup";
 import AuthContextProvider from "../context/authContext";
 
 function App() {
-  return (
-    <BrowserRouter>
-      <AuthContextProvider>
-        <CookiesProvider>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-          </Routes>
-        </CookiesProvider>
-      </AuthContextProvider>
-    </BrowserRouter>
-  );
+	return (
+		<BrowserRouter>
+			<AuthContextProvider>
+				<CookiesProvider>
+					<Routes>
+						<Route
+							path="/"
+							element={<Home />}
+						/>
+						<Route
+							path="/login"
+							element={<Login />}
+						/>
+						<Route
+							path="/signup"
+							element={<Signup />}
+						/>
+					</Routes>
+				</CookiesProvider>
+			</AuthContextProvider>
+		</BrowserRouter>
+	);
 }
 
 export default App;
