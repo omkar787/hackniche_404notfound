@@ -9,16 +9,22 @@ import Slide from "../components/Slider/Slide";
 
 const Home = () => {
   const [news, setNews] = useState([]);
+  const [topNews, setTopNews] = useState([]);
 
 
 
   useEffect( () => {
-    const query = async () => {
+    const latestNews = async () => {
       const result = await instance.get('/news');
       setNews(result.data.data.data);
-      console.log(result.data.data.data);
+      //console.log(result.data.data.data);
     }
-    query();
+    const topNews = async () => {
+      const result = await instance.get('/news/top-5-news');
+      setTopNews(result.data.data.data);
+    }
+    topNews();
+    latestNews();
   }, []);
 
   return (
@@ -36,7 +42,7 @@ const Home = () => {
           Trending News
         </CenterSeparator>
         <Slider>
-          {docs.map((ele, i) => {
+          {topNews.map((ele, i) => {
             return (
               <Slide
                 key={i}

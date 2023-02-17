@@ -20,7 +20,7 @@ const whitelist = ["http://localhost:5173"];
 app.use(
   cors({
     origin: function (origin, callback) {
-      if (whitelist.indexOf(origin) !== -1) {
+      if (whitelist.indexOf(origin) !== -1 || !origin) {
         callback(null, true);
       } else {
         callback(new Error("Not allowed by CORS"));
@@ -30,6 +30,7 @@ app.use(
     credentials: true,
   })
 );
+
 // app.options("*", cors());
 
 // cookie parser
