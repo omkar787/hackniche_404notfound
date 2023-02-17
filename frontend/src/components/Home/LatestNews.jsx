@@ -16,7 +16,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import { CardClickable, LatestNewsContainer } from "./elements";
 import ViewNews from "./ViewNews";
 
-const LatestNews = ({news}) => {
+const LatestNews = ({ news }) => {
   const [currentNews, setCurrentNews] = useState(null);
   const [showNews, setShowNews] = useState(false);
 
@@ -29,7 +29,6 @@ const LatestNews = ({news}) => {
           news={ele}
           key={i}
           onCardClick={() => {
-            console.log(ele);
             setCurrentNews(ele);
             setShowNews(true);
           }}

@@ -49,7 +49,6 @@ export function LoginForm() {
         password,
       });
       const data = response.data;
-      console.log(data);
       setCookie("jwt", data.token, { path: "/" });
       navigate("/");
     } catch (error) {

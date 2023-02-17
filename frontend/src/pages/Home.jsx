@@ -1,3 +1,4 @@
+import { Autocomplete, Chip, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import instance from "../../utils/axiosInstance";
 import { CenterSeparator } from "../components/Home/elements";
@@ -16,7 +17,6 @@ const Home = () => {
     const query = async () => {
       const result = await instance.get("/news");
       setNews(result.data.data.data);
-      console.log(result.data.data.data);
     };
     query();
   }, []);
@@ -40,29 +40,91 @@ const Home = () => {
 
 const WhenLogin = ({ user }) => {
   const [news, setNews] = useState([]);
+  const [value, setValue] = useState([]);
 
+  const query = async () => {
+    const res = await instance.get(`/news/?category=${user.category.join()}`);
+    if (res.data?.data?.data) {
+      setNews(res.data.data.data);
+    }
+  };
   useEffect(() => {
-    const query = async () => {
-      const res = await instance.get(`/news/?category=${user.category.join()}`);
-      console.log("feed", res);
-      if (res.data?.data?.data) {
-        setNews(res.data.data.data);
-      }
-    };
     query();
   }, []);
 
+  useEffect(() => {
+    if (value.length === 0) query();
+    else {
+      const filterSearch = async () => {
+        const res = await instance.get(
+          `/news/?category=${value.map((e) => e.toLowerCase()).join()}`
+        );
+        setNews(res.data.data.data.sort(() => Math.random() - 0.5));
+      };
+      filterSearch();
+    }
+  }, [value]);
+
   return (
     <>
-      <CenterSeparator
+      <div
         style={{
-          textAlign: "left",
-          paddingLeft: "130px",
-          boxSizing: "border-box",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          paddingRight: "140px",
         }}
       >
-        Your Feed:{" "}
-      </CenterSeparator>
+        <CenterSeparator
+          style={{
+            textAlign: "left",
+            paddingLeft: "130px",
+            boxSizing: "border-box",
+          }}
+        >
+          Your Feed:{" "}
+        </CenterSeparator>
+        <Autocomplete
+          multiple
+          options={filter.map((option) => option.label)}
+          limitTags={2}
+          value={value}
+          style={{
+            minWidth: "300px",
+            maxWidth: "800px",
+          }}
+          onChange={(e, n) => {
+            console.log("n", n);
+            const temp = [...n];
+            setValue(temp);
+          }}
+          renderTags={(value, getTagProps) =>
+            value.map((option, index) => (
+              <Chip
+                variant="outlined"
+                label={option}
+                style={{
+                  background: "white",
+                  marginRight: "20px",
+                }}
+                {...getTagProps({ index })}
+              />
+            ))
+          }
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              variant="filled"
+              label="Filter"
+              placeholder="Filter"
+              style={{
+                background: "white",
+                borderRadius: "4px",
+              }}
+            />
+          )}
+        />
+      </div>
       <LatestNews news={news} />
     </>
   );
@@ -94,4 +156,16 @@ const NotLogin = ({ news }) => {
   );
 };
 
+const filter = [
+  { key: "business", label: "Business" },
+  { key: "entertainment", label: "Entertainment" },
+  { key: "environment", label: "Environment" },
+  { key: "food", label: "Food" },
+  { key: "health", label: "Health" },
+  { key: "politics", label: "Politics" },
+  { key: "science", label: "Science" },
+  { key: "sports", label: "Sports" },
+  { key: "technology", label: "Technology" },
+  { key: "world", label: "World" },
+];
 export default Home;
