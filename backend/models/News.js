@@ -53,4 +53,10 @@ NewsSchema.pre(/^find/, function (next) {
   next();
 });
 
+NewsSchema.pre(/^find/, function (next) {
+	this.find({ image_url: { $ne: null } });
+	next();
+  });
+  
+
 module.exports = mongoose.model("news2", NewsSchema);

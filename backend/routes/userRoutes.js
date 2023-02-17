@@ -13,8 +13,7 @@ router
 	.route("/update-intrest")
 	.patch(authController.protect, userIntrestController.update_intrest);
 
-
 router
 	.route("/get-intrest")
-	.patch(authController.protect, userIntrestController.get_intrest);
+	.get(authController.protect, userIntrestController.get_intrest);
 module.exports = router;
