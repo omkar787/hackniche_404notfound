@@ -22,7 +22,6 @@ exports.getAllNews = catchAsync(async (req, res, next) => {
 });
 
 exports.getNewsById = catchAsync(async (req, res, next) => {
-  console.log({ id: req.params.id });
   const document = await News.findById(req.params.id);
 
   if (!document) {

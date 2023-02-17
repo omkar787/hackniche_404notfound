@@ -2,12 +2,13 @@ class APIFeatures {
   constructor(query, queryString) {
     this.query = query;
     this.queryString = queryString;
-    console.log(queryString);
   }
 
   filter() {
     const queryObjects = { ...this.queryString };
     const excludedFields = ["page", "sort", "fields", "limit"];
+    const arrayValuesFilter = ["category", "keywords"];
+
     excludedFields.forEach((ele) => delete queryObjects[ele]);
 
     let queryString = JSON.stringify(queryObjects);
@@ -16,7 +17,19 @@ class APIFeatures {
       (match) => `$${match}`
     );
 
-    this.query = this.query.find(JSON.parse(queryString));
+    queryString = JSON.parse(queryString);
+
+    arrayValuesFilter.forEach((element) => {
+      if (queryString[element]) {
+        queryString[element] = {
+          $all: queryString[element].split(","),
+        };
+      }
+    });
+
+    console.log(queryString);
+
+    this.query = this.query.find(queryString);
     return this;
   }
 
