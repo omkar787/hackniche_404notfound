@@ -1,13 +1,17 @@
 import "../css/App.css";
-import { Button } from "react-bootstrap";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from "../pages/Home";
+import Login from "../pages/Login";
 
 function App() {
-	return (
-		<div>
-			Here
-			<Button variant="primary">Here</Button>
-		</div>
-	);
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
 export default App;
