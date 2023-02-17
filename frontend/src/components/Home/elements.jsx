@@ -77,3 +77,38 @@ export const LatestNewsContainer = styled.div`
   justify-content: space-around;
   align-items: center;
 `;
+
+export const CardClickable = styled.div`
+  margin: 0px;
+  cursor: pointer;
+`;
+
+export const VNContainer = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: max(62%, 400px);
+  height: 80vh;
+  background: rgb(50 52 55);
+  border-radius: 12px;
+  display: grid;
+  grid-template-columns: 0.4fr 0.6fr;
+  /* padding: 22px 34px; */
+`;
+export const VNImg = styled.img`
+  width: 100%;
+  height: 100%;
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+  object-fit: cover;
+`;
+
+export const VNContent = styled.div`
+  flex-grow: 1;
+  overflow: auto;
+  height: 300px;
+  padding: 12px 18px;
+  color: white;
+  box-shadow: inset 0px 2px #555, inset 0px -2px #444;
+`;
