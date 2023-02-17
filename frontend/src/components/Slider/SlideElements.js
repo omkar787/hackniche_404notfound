@@ -11,6 +11,10 @@ export const Card = styled.div`
   padding-top: 70px;
   background: ${(props) =>
     props.background || "linear-gradient(#8432a5, #5963e9)"};
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  object-fit: contain;
   @media (max-width: 1000px) {
     flex-direction: column;
     align-items: center;
@@ -111,4 +115,23 @@ export const StoreHeading = styled.h4`
   text-transform: uppercase;
   font-size: 1.3rem;
   font-weight: 900;
+`;
+
+export const TextWrapper = styled.div`
+  position: absolute;
+  padding: 40px 70px;
+`;
+
+export const SlideHeading = styled.h3`
+  font-size: 60px;
+  color: white;
+  text-shadow: 1px 1px 8px black, 0px 0px 18px black;
+  width: max(70%, 300px);
+`;
+export const SlideDescription = styled.h3`
+  font-size: 24px;
+  color: white;
+  font-weight: 300;
+  text-shadow: 1px 1px 8px black, 0px 0px 12px black;
+  width: max(70%, 300px);
 `;

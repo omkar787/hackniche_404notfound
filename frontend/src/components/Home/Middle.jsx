@@ -25,7 +25,7 @@ const Middle = () => {
 
   return (
     <MidContainer>
-      <MidElement style={{ padding: "42px", background: "rgb(255 224 178)" }}>
+      <MidElement style={{ padding: "42px", background: "#222" }}>
         <MidHeading>Discover new world news and follow developments</MidHeading>
         <MidSubHeading>
           Follow latest developments in the world. Don't fall behind.

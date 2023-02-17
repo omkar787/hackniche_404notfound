@@ -1,12 +1,21 @@
 import React from "react";
-import { Card, CardBody, MyImage } from "./SlideElements";
+import {
+  Card,
+  SlideDescription,
+  SlideHeading,
+  TextWrapper,
+} from "./SlideElements";
 
-const Slide = (props) => {
-  const { background, image } = props;
+const Slide = ({ image, title, description, children }) => {
   return (
-    <Card background={background}>
-      <CardBody>{props.children}</CardBody>
-      <MyImage src={image} />
+    <Card
+      style={{ position: "relative" }}
+      background={image ? `url(${image})` : null}
+    >
+      <TextWrapper>
+        <SlideHeading>{title}</SlideHeading>
+        <SlideDescription>{description}</SlideDescription>
+      </TextWrapper>
     </Card>
   );
 };

@@ -2,14 +2,14 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 export const NavContainer = styled.div`
-  background: rgb(253 177 62);
+  background: #222;
   padding: 14px 32px;
   display: flex;
   flex-direction: row;
 `;
 
 export const NavTitle = styled.h1`
-  color: black;
+  color: #ddd;
   font-size: 2rem;
   font-weight: 600;
 `;
@@ -30,19 +30,19 @@ export const AuthButtonGroup = styled.div`
 export const LoginButton = styled(Link)`
   text-decoration: none;
   font-size: 18px;
-  color: black;
+  color: #ddd;
   font-weight: 600;
   padding: 4px 14px;
   border-radius: 4px;
   border: 1px solid transparent;
 
   &:hover {
-    background: rgb(245 217 179);
-    color: black;
+    background: #444;
+    color: white;
     text-decoration: underline;
   }
   &:active {
-    border: 1px solid rgb(203, 186, 161);
+    border: 1px solid white;
   }
 `;
 export const RegisterButton = styled(Link)`
@@ -56,7 +56,7 @@ export const RegisterButton = styled(Link)`
   border: 1px solid transparent;
 
   &:hover {
-    background: black;
+    background: #444;
     color: white;
     text-decoration: underline;
   }

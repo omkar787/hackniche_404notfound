@@ -12,13 +12,13 @@ export const MidContainer = styled.div`
 `;
 
 export const MidHeading = styled.h3`
-  color: black;
+  color: white;
   font-size: 30px;
   font-weight: 700;
 `;
 
 export const MidSubHeading = styled.h4`
-  color: black;
+  color: #ddd;
   font-size: 20px;
   font-weight: 400;
   padding: 22px 0;
@@ -65,4 +65,5 @@ export const CenterSeparator = styled.div`
   font-weight: 600;
   margin-top: 46px;
   margin-bottom: 18px;
+  color: white;
 `;
