@@ -17,7 +17,7 @@ const Navbar = () => {
       </LogoStuff>
       <AuthButtonGroup>
         <LoginButton to={"/login"}>Login</LoginButton>
-        <RegisterButton to={"/register"}>Register</RegisterButton>
+        <RegisterButton to={"/signup"}>Register</RegisterButton>
       </AuthButtonGroup>
     </NavContainer>
   );
