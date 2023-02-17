@@ -19,7 +19,7 @@ import { useCookies } from "react-cookie";
 import instance from "../../../utils/axiosInstance";
 import { ToastContainer } from "react-toastify";
 
-import { showToastMessage } from "../../utils/toastify";
+import { showToastMessage } from "../../../utils/toastify";
 
 import { useNavigate } from "react-router-dom";
 

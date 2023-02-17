@@ -17,7 +17,7 @@ const Searchbar = ({
 }) => {
   const submit = (e) => {
     e.preventDefault();
-    submit();
+    handleQuerySubmit();
   };
   return (
     <SearchbarContainer onSubmit={handleQuerySubmit} {...others}>
