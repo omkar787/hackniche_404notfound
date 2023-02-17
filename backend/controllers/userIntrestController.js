@@ -16,3 +16,11 @@ exports.update_intrest = catchAsync(async (req, res, next) => {
 		msg: "Update successfully",
 	});
 });
+
+exports.get_intrest = catchAsync(async (req, res, next) => {
+	const { category } = req.user;
+	res.status(200).json({
+		status: "success",
+		intrest: category,
+	});
+});

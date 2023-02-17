@@ -8,6 +8,9 @@ router.route("/login").post(authController.login);
 router.route("/logout").get(authController.logout);
 router
 	.route("/update-intrest")
-	// .get(authController.protect)
 	.patch(authController.protect, userIntrestController.update_intrest);
+
+router
+	.route("/get-intrest")
+	.patch(authController.protect, userIntrestController.get_intrest);
 module.exports = router;
