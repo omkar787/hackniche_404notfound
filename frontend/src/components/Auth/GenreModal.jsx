@@ -8,13 +8,28 @@ import Paper from "@mui/material/Paper";
 import TagFacesIcon from "@mui/icons-material/TagFaces";
 import { Button, DialogActions, DialogContent } from "@mui/material";
 import { ImPriceTags } from "react-icons/im";
+import instance from "../../../utils/axiosInstance";
 
 const ListItem = styled("li")(({ theme }) => ({
 	margin: theme.spacing(0.5),
 }));
 
-const GenreModal = ({ open }) => {
-	const handleClose = () => {};
+const GenreModal = ({
+	open,
+	setOpen,
+	selectedData,
+	updateSelectedData,
+	while_signup,
+	saving,
+	setSaving,
+	setSubmitting,
+}) => {
+	// const [saving, setSaving] = useState(false);
+	const handleClose = () => {
+		setOpen(false);
+		setSaving(false);
+		setSubmitting(false);
+	};
 
 	const [chipData, setChipData] = React.useState([
 		{ key: "business", label: "Business" },
@@ -29,7 +44,7 @@ const GenreModal = ({ open }) => {
 		{ key: "world", label: "World" },
 	]);
 
-	const [selectedData, updateSelectedData] = React.useState([]);
+	// const [selectedData, updateSelectedData] = React.useState([]);
 
 	const handleDelete = (chipToDelete) => () => {
 		setChipData((chips) =>
@@ -140,6 +155,25 @@ const GenreModal = ({ open }) => {
 				<Button
 					size="small"
 					variant="outlined"
+					onClick={async () => {
+						setSaving(true);
+						try {
+							if (!while_signup) {
+								const temp = selectedData.map((dt) => {
+									return dt.key;
+								});
+								const result = await instance.patch("/users/update-intrest", {
+									intrest: temp,
+								});
+
+								console.log(result);
+								console.log(temp);
+							}
+							setOpen(false);
+						} catch (error) {
+							console.log(error);
+						}
+					}}
 				>
 					{"Save"}
 				</Button>
