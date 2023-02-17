@@ -48,7 +48,7 @@ const popu = async () => {
 		try {
 			const url = `${process.env.NEWS_API_URL}?q=${
 				cat.name
-			}&from=${get_current_date()}&sortBy=relevancy&apiKey=${
+			}&from=${get_current_date()}&sortBy=relevancy&language=en&apiKey=${
 				process.env.NEWS_API_KEY
 			}`;
 
@@ -79,7 +79,7 @@ const add_news = async (articles, cat) => {
 			url: null,
 			source: null,
 			category_id: cat._id,
-			catgory_name: cat.name,
+			category_name: cat.name,
 		};
 	});
 
