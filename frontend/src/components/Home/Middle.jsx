@@ -65,7 +65,7 @@ const Middle = () => {
       "Science",
       "Technology",
     ],
-    loop: 5,
+    loop: 50,
 
     cursorColor: "#FF0000",
 
