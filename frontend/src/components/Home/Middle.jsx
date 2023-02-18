@@ -14,6 +14,8 @@ import instance from "../../../utils/axiosInstance";
 import { showToastMessage } from "../../../utils/toastify";
 import { ToastContainer } from "react-toastify";
 import ViewNews from "./ViewNews";
+import { Typewriter } from "react-simple-typewriter";
+import { useTypewriter, Cursor } from "react-simple-typewriter";
 
 const Middle = () => {
   const [query, setQuery] = useState("");
@@ -51,7 +53,27 @@ const Middle = () => {
   const handleQueryChange = (e) => {
     setQuery(e.target.value);
   };
+  const [text, l] = useTypewriter({
+    words: [
+      "Politics",
+      "Entertainment",
+      "Health",
+      "Sports",
+      "Food",
+      "World",
+      "Environment",
+      "Science",
+      "Technology",
+    ],
+    loop: 50,
 
+    cursorColor: "#FF0000",
+
+    cursorStyle: "_",
+    typeSpeed: 70,
+    deleteSpeed: 50,
+    delaySpeed: 1000,
+  });
   return (
     <MidContainer>
       <MidElement style={{ padding: "42px", background: "#222" }}>
@@ -101,8 +123,34 @@ const Middle = () => {
         </MidElement>
       </MidElement>
       <MidElement style={{ position: "relative" }}>
-        <img src={"/assets/city.jfif"} style={{ width: "600px" }} alt="city" />
-        <StyledText>Get the Latest News !</StyledText>
+        <img
+          src={"/assets/newspaper.jpg"}
+          style={{ width: "600px" }}
+          alt="city"
+        />
+        {/* Get the Latest News !</StyledText> */}
+        <StyledText>
+          <div>We provide news for </div>
+          <span
+            style={{
+              color: "red",
+            }}
+          >
+            {text}
+          </span>
+          <Cursor cursorColor="red" cursorStyle="_" />
+          {/* <Typewriter
+            words={["entertainment", "techology"]}
+            loop={5}
+            cursorColor="#FF0000"
+            cursor
+            cursorStyle="_"
+            typeSpeed={70}
+            deleteSpeed={50}
+            delaySpeed={1000}
+            // onLoopDone={handleDone}
+          /> */}
+        </StyledText>
       </MidElement>
     </MidContainer>
   );
