@@ -11,6 +11,8 @@ import { useAuth } from "../context/authContext";
 
 const Home = () => {
   const [news, setNews] = useState([]);
+  const [topNews, setTopNews] = useState([]);
+
   const { user } = useAuth();
 
   useEffect(() => {
@@ -18,6 +20,11 @@ const Home = () => {
       const result = await instance.get("/news");
       setNews(result.data.data.data);
     };
+    const topNews = async () => {
+      const result = await instance.get("/news/top-5-news");
+      setTopNews(result.data.data.data);
+    };
+    topNews();
     query();
   }, []);
 
@@ -32,7 +39,11 @@ const Home = () => {
         }}
       >
         <Middle />
-        {!user ? <NotLogin news={news} /> : <WhenLogin user={user} />}
+        {!user ? (
+          <NotLogin topNews={topNews} news={news} />
+        ) : (
+          <WhenLogin user={user} />
+        )}
       </div>
     </div>
   );
@@ -130,14 +141,14 @@ const WhenLogin = ({ user }) => {
   );
 };
 
-const NotLogin = ({ news }) => {
+const NotLogin = ({ news, topNews }) => {
   return (
     <>
       <CenterSeparator style={{ paddingTop: "102px", paddingBottom: "40px" }}>
         Trending News
       </CenterSeparator>
       <Slider>
-        {news.map((ele, i) => {
+        {topNews.map((ele, i) => {
           return (
             <Slide
               key={i}
