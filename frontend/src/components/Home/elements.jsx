@@ -102,6 +102,7 @@ export const VNImg = styled.img`
   border-top-left-radius: 12px;
   border-bottom-left-radius: 12px;
   object-fit: cover;
+  max-height: 590px;
 `;
 
 export const VNContent = styled.div`

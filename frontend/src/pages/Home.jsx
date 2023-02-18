@@ -52,6 +52,7 @@ const Home = () => {
 const WhenLogin = ({ user }) => {
   const [news, setNews] = useState([]);
   const [value, setValue] = useState([]);
+  const [liked, setLiked] = useState([]);
 
   const query = async () => {
     const res = await instance.get(`/news/?category=${user.category.join()}`);
@@ -59,8 +60,28 @@ const WhenLogin = ({ user }) => {
       setNews(res.data.data.data);
     }
   };
+
+  const likeQuery = async () => {
+    const temp = await instance.get("/likes/all-liked");
+    console.log("like log", temp.data);
+    const arr = temp.data.map((e) => e.newsId);
+    console.log("arr", arr);
+    setLiked(arr);
+  };
+
+  const toggleLike = (id) => {
+    if (liked.includes(id)) {
+      setLiked(liked.filter((e) => e !== id));
+    } else {
+      setLiked([...liked, id]);
+    }
+  };
+
   useEffect(() => {
     query();
+    if (user) {
+      likeQuery();
+    }
   }, []);
 
   useEffect(() => {
@@ -136,7 +157,7 @@ const WhenLogin = ({ user }) => {
           )}
         />
       </div>
-      <LatestNews news={news} />
+      <LatestNews news={news} likeData={liked} toggleLike={toggleLike} />
     </>
   );
 };

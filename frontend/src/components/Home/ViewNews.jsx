@@ -4,8 +4,26 @@ import { MidHeading, VNContainer, VNContent, VNImg } from "./elements";
 import CloseIcon from "@mui/icons-material/Close";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import { useAuth } from "../../context/authContext";
+import { showToastMessage } from "../../../utils/toastify";
+import copy from "copy-to-clipboard";
 
-const ViewNews = ({ news, close }) => {
+const ViewNews = ({ news, close, likeData = [] }) => {
+  const { user } = useAuth();
+
+  const handleAddToFav = () => {
+    if (!user) {
+      showToastMessage("Please login first", "error");
+    } else {
+      console.log(likeData.includes(news._id));
+      showToastMessage("Added to favorite", "success");
+    }
+  };
+  const handleShareClick = () => {
+    showToastMessage("URL Copied to Clipboard", "success");
+    copy(news.link);
+  };
+
   return (
     <VNContainer>
       <div style={{ position: "relative" }}>
@@ -59,18 +77,31 @@ const ViewNews = ({ news, close }) => {
         <VNContent>{news.content}</VNContent>
         <CardActions style={{ padding: "12px" }}>
           <Button
+            onClick={handleAddToFav}
             variant="contained"
             style={{ background: "red" }}
             startIcon={<FavoriteIcon />}
           >
             Add to favorites
           </Button>
-          <Button variant="contained">Share</Button>
-          <Button
-            style={{ marginLeft: "auto", fontWeight: "800", color: "#69b4ff" }}
-          >
-            Read more
+          <Button variant="contained" onClick={handleShareClick}>
+            Share
           </Button>
+          <a
+            style={{ marginLeft: "auto", textDecoration: "none" }}
+            href={news.link}
+            target="_blank"
+          >
+            <Button
+              style={{
+                marginLeft: "auto",
+                fontWeight: "800",
+                color: "#69b4ff",
+              }}
+            >
+              Read more
+            </Button>
+          </a>
         </CardActions>
       </div>
     </VNContainer>

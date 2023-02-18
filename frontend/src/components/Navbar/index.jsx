@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../context/authContext";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   AuthButtonGroup,
   LoginButton,
@@ -17,7 +17,9 @@ const Navbar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
-  const navigate = useNavigate();
+  const location = useLocation();
+
+  console.log("user from navbar", user);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -70,8 +72,12 @@ const Navbar = () => {
           </>
         ) : (
           <>
-            <LoginButton to={"/login"}>Login</LoginButton>
-            <RegisterButton to={"/signup"}>Register</RegisterButton>
+            {location.pathname !== "/login" && (
+              <LoginButton to={"/login"}>Login</LoginButton>
+            )}
+            {location.pathname !== "/signup" && (
+              <RegisterButton to={"/signup"}>Register</RegisterButton>
+            )}
           </>
         )}
       </AuthButtonGroup>
