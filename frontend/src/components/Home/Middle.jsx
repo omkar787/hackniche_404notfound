@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Autocomplete, InputAdornment, TextField } from "@mui/material";
+import { Autocomplete, InputAdornment, TextField, Modal } from "@mui/material";
 import {
   MidContainer,
   MidElement,
@@ -13,11 +13,19 @@ import Searchbar from "./SearchBar";
 import instance from "../../../utils/axiosInstance";
 import { showToastMessage } from "../../../utils/toastify";
 import { ToastContainer } from "react-toastify";
+import ViewNews from "./ViewNews";
+import { Typewriter } from "react-simple-typewriter";
+import { useTypewriter, Cursor } from "react-simple-typewriter";
 
 const Middle = () => {
   const [query, setQuery] = useState("");
   const [expand, setExpad] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
+
+  const [currentNews, setCurrentNews] = useState(null);
+  const [showNews, setShowNews] = useState(false);
+
+  const handleClose = () => setShowNews(false);
 
   useEffect(() => {
     if (!query) return;
@@ -26,9 +34,8 @@ const Middle = () => {
       try {
         const res = await instance.get(`/news/match-text/${query}`);
         const { data } = res;
-        const suggests = data.data.data.map((data) => {
-          return data.title;
-        });
+        const suggests = data.data.data.map((data) => data);
+        console.log(suggests);
         setSuggestions(suggests);
       } catch (error) {
         console.log(error);
@@ -46,7 +53,27 @@ const Middle = () => {
   const handleQueryChange = (e) => {
     setQuery(e.target.value);
   };
+  const [text, l] = useTypewriter({
+    words: [
+      "Politics",
+      "Entertainment",
+      "Health",
+      "Sports",
+      "Food",
+      "World",
+      "Environment",
+      "Science",
+      "Technology",
+    ],
+    loop: 50,
 
+    cursorColor: "#FF0000",
+
+    cursorStyle: "_",
+    typeSpeed: 70,
+    deleteSpeed: 50,
+    delaySpeed: 1000,
+  });
   return (
     <MidContainer>
       <MidElement style={{ padding: "42px", background: "#222" }}>
@@ -66,7 +93,8 @@ const Middle = () => {
             placeholder="Search news..."
             queryValue={query}
             handleFocus={() => setExpad(true)}
-            handleBlur={() => setExpad(false)}
+            handleBlur={() => setTimeout(() => setExpad(false), 500)}
+            // handleBlur={() => setExpad(false)}
             handleQueryChange={handleQueryChange}
           />
           {expand && (
@@ -74,17 +102,55 @@ const Middle = () => {
               {suggestions.length === 0 ? (
                 <SearchSuggestion> No Result Found</SearchSuggestion>
               ) : (
-                suggestions.map((e, index) => (
-                  <SearchSuggestion key={index}>{e}</SearchSuggestion>
+                suggestions.map((element, index) => (
+                  <SearchSuggestion
+                    key={element._id}
+                    onClick={() => {
+                      console.log(element);
+                      setCurrentNews(element);
+                      setShowNews(true);
+                    }}
+                  >
+                    {element.title}
+                  </SearchSuggestion>
                 ))
               )}
             </SearchSuggestionContainer>
           )}
+          <Modal open={showNews} onClose={handleClose}>
+            <ViewNews news={currentNews} close={handleClose} />
+          </Modal>
         </MidElement>
       </MidElement>
       <MidElement style={{ position: "relative" }}>
-        <img src={"/assets/city.jfif"} style={{ width: "600px" }} alt="city" />
-        <StyledText>Get the Latest News !</StyledText>
+        <img
+          src={"/assets/newspaper.jpg"}
+          style={{ width: "600px" }}
+          alt="city"
+        />
+        {/* Get the Latest News !</StyledText> */}
+        <StyledText>
+          <div>We provide news for </div>
+          <span
+            style={{
+              color: "red",
+            }}
+          >
+            {text}
+          </span>
+          <Cursor cursorColor="red" cursorStyle="_" />
+          {/* <Typewriter
+            words={["entertainment", "techology"]}
+            loop={5}
+            cursorColor="#FF0000"
+            cursor
+            cursorStyle="_"
+            typeSpeed={70}
+            deleteSpeed={50}
+            delaySpeed={1000}
+            // onLoopDone={handleDone}
+          /> */}
+        </StyledText>
       </MidElement>
     </MidContainer>
   );

@@ -46,7 +46,7 @@ exports.getNewsById = catchAsync(async (req, res, next) => {
 
 exports.getAllNewsMatchingTitle = catchAsync(async (req, res, next) => {
 	const text = req.params.text;
-	const regexTitle = new RegExp(text);
+	const regexTitle = new RegExp(text, "i");
 
 	const features = new APIFeatures(News.find({ title: regexTitle }), req.query)
 		.filter()
