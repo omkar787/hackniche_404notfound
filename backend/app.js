@@ -16,7 +16,11 @@ const app = express();
 // serving static files
 app.use(express.static(path.join(__dirname, "public")));
 
-const whitelist = ["http://localhost:5173", "http://localhost:3000"];
+const whitelist = [
+	"http://localhost:5173",
+	"http://localhost:3000",
+	"https://hackniche-404notfound.vercel.app/",
+];
 
 app.use(
 	cors({
