@@ -6,11 +6,12 @@ const newsController = require("../controllers/newsController");
 router.route("/").get(newsController.getAllNews);
 
 router
-  .route("/top-5-news")
-  .get(newsController.getAllTopNews, newsController.getAllNews);
+	.route("/top-5-news")
+	.get(newsController.getAllTopNews, newsController.getAllNews);
 
 router.route("/match-text/:text").get(newsController.getAllNewsMatchingTitle);
 
+router.route("/get_sources").get(newsController.getSources);
 router.route("/:id").get(newsController.getNewsById);
 
 module.exports = router;

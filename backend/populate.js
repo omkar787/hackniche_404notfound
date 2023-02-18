@@ -36,10 +36,22 @@ mongoose
 		// popu();
 		// await populate_sources();
 		// console.log("Sources Populated successfully");
-		await popu();
+		// await popu();
+		// await sources_popu();
 	})
 	.catch((error) => console.log(error));
 
+const sources_popu = async () => {
+	let newss = await News.find().distinct("source").exec();
+	newss = newss.map((ns) => {
+		return {
+			name: ns,
+		};
+	});
+
+	console.log(newss);
+	await Sources.create(newss);
+};
 const popu = async () => {
 	const categories = await get_categories();
 	let articles = null;
