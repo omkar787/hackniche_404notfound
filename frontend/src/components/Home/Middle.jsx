@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Autocomplete, InputAdornment, TextField } from "@mui/material";
+import { Autocomplete, InputAdornment, TextField, Modal } from "@mui/material";
 import {
   MidContainer,
   MidElement,
@@ -13,11 +13,17 @@ import Searchbar from "./SearchBar";
 import instance from "../../../utils/axiosInstance";
 import { showToastMessage } from "../../../utils/toastify";
 import { ToastContainer } from "react-toastify";
+import ViewNews from "./ViewNews";
 
 const Middle = () => {
   const [query, setQuery] = useState("");
   const [expand, setExpad] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
+
+  const [currentNews, setCurrentNews] = useState(null);
+  const [showNews, setShowNews] = useState(false);
+
+  const handleClose = () => setShowNews(false);
 
   useEffect(() => {
     if (!query) return;
@@ -26,9 +32,8 @@ const Middle = () => {
       try {
         const res = await instance.get(`/news/match-text/${query}`);
         const { data } = res;
-        const suggests = data.data.data.map((data) => {
-          return data.title;
-        });
+        const suggests = data.data.data.map((data) => data);
+        console.log(suggests);
         setSuggestions(suggests);
       } catch (error) {
         console.log(error);
@@ -66,7 +71,8 @@ const Middle = () => {
             placeholder="Search news..."
             queryValue={query}
             handleFocus={() => setExpad(true)}
-            handleBlur={() => setExpad(false)}
+            handleBlur={() => setTimeout(() => setExpad(false), 500)}
+            // handleBlur={() => setExpad(false)}
             handleQueryChange={handleQueryChange}
           />
           {expand && (
@@ -74,12 +80,24 @@ const Middle = () => {
               {suggestions.length === 0 ? (
                 <SearchSuggestion> No Result Found</SearchSuggestion>
               ) : (
-                suggestions.map((e, index) => (
-                  <SearchSuggestion key={index}>{e}</SearchSuggestion>
+                suggestions.map((element, index) => (
+                  <SearchSuggestion
+                    key={element._id}
+                    onClick={() => {
+                      console.log(element);
+                      setCurrentNews(element);
+                      setShowNews(true);
+                    }}
+                  >
+                    {element.title}
+                  </SearchSuggestion>
                 ))
               )}
             </SearchSuggestionContainer>
           )}
+          <Modal open={showNews} onClose={handleClose}>
+            <ViewNews news={currentNews} close={handleClose} />
+          </Modal>
         </MidElement>
       </MidElement>
       <MidElement style={{ position: "relative" }}>
