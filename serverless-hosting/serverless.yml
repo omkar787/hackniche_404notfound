@@ -1,0 +1,36 @@
+service: serverless-hosting
+frameworkVersion: "3"
+useDotenv: true
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: ap-south-1
+
+  environment:
+    MONGODB_URL: ${env:MONGODB_URL}
+    MONGODB_USERNAME: ${env:MONGODB_USERNAME}
+    MONGODB_PASSWORD: ${env:MONGODB_PASSWORD}
+    JWT_SECRET: ${env:JWT_SECRET}
+    JWT_EXPIRES_IN: ${env:JWT_EXPIRES_IN}
+    JWT_COOKIE_EXPIRES_IN: ${env:JWT_COOKIE_EXPIRES_IN}
+    NEWS_API_URL: ${env:NEWS_API_URL}
+    NEWS_API_KEY: ${env:NEWS_API_KEY}
+
+plugins:
+  - serverless-offline
+
+functions:
+  api:
+    handler: index.handler
+    events:
+      - http:
+          method: "any"
+          path: /{proxy+}
+          cors:
+            allowCredentials: true
+            origin: https://hackniche-404notfound.vercel.app
+            headers:
+              - Content-Type
+              - Access-Control-Allow-Headers
+              - Access-Control-Allow-Origin
