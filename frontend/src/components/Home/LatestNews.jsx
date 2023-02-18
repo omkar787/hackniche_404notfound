@@ -10,7 +10,7 @@ import {
   Slide,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ShareIcon from "@mui/icons-material/Share";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { CardClickable, LatestNewsContainer } from "./elements";
@@ -18,9 +18,11 @@ import ViewNews from "./ViewNews";
 import { useAuth } from "../../context/authContext";
 import { showToastMessage } from "../../../utils/toastify";
 import copy from "copy-to-clipboard";
+import instance from "../../../utils/axiosInstance";
 
-const LatestNews = ({ news }) => {
+const LatestNews = ({ news, likeData = [], toggleLike }) => {
   const [currentNews, setCurrentNews] = useState(null);
+
   const [showNews, setShowNews] = useState(false);
 
   const handleClose = () => setShowNews(false);
@@ -31,29 +33,38 @@ const LatestNews = ({ news }) => {
         <NewsCard
           news={ele}
           key={i}
+          likeData={likeData}
           onCardClick={() => {
             setCurrentNews(ele);
             setShowNews(true);
           }}
+          actualToggle={toggleLike}
         />
       ))}
       <Modal open={showNews} onClose={handleClose}>
-        <ViewNews news={currentNews} close={handleClose} />
+        <ViewNews news={currentNews} likeData={likeData} close={handleClose} />
       </Modal>
     </LatestNewsContainer>
   );
 };
 
-const NewsCard = ({ news, onCardClick }) => {
+const NewsCard = ({ news, onCardClick, likeData = [], actualToggle }) => {
   const dateObj = new Date(news.pubDate);
-  const [liked, setLiked] = useState(false);
-  const toggleLike = () => {
+  const [incType, setIncType] = useState(likeData.includes(news._id));
+  const [likeStatus, setLikeStatus] = useState(likeData.includes(news._id));
+
+  const toggleLike = async () => {
     if (!user) {
       showToastMessage("Please login first", "error");
     } else {
-      setLiked(!liked);
+      actualToggle(news._id);
+      await instance.get(`/likes?likeId=${news._id}`);
     }
   };
+
+  useEffect(() => {
+    setLikeStatus(likeData.includes(news._id));
+  }, [likeData]);
 
   const { user } = useAuth();
 
@@ -102,9 +113,16 @@ const NewsCard = ({ news, onCardClick }) => {
       </CardClickable>
       <CardActions>
         <IconButton onClick={toggleLike}>
-          <FavoriteIcon style={{ color: liked ? "#af1616" : "#d3d2c7" }} />
+          <FavoriteIcon
+            style={{
+              color: likeStatus ? "#af1616" : "#d3d2c7",
+            }}
+          />
         </IconButton>
-        <span style={{ color: "white" }}>{2}</span>
+        <span style={{ color: "white" }}>
+          {news.like_count +
+            (incType ? (likeStatus ? 0 : -1) : likeStatus ? 1 : 0)}
+        </span>
         <IconButton onClick={handleShare}>
           <ShareIcon style={{ color: "#d3d2c7" }} />
         </IconButton>

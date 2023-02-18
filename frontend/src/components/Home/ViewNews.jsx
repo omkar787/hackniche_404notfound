@@ -8,13 +8,14 @@ import { useAuth } from "../../context/authContext";
 import { showToastMessage } from "../../../utils/toastify";
 import copy from "copy-to-clipboard";
 
-const ViewNews = ({ news, close }) => {
+const ViewNews = ({ news, close, likeData = [] }) => {
   const { user } = useAuth();
 
   const handleAddToFav = () => {
     if (!user) {
       showToastMessage("Please login first", "error");
     } else {
+      console.log(likeData.includes(news._id));
       showToastMessage("Added to favorite", "success");
     }
   };
